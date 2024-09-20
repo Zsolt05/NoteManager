@@ -24,9 +24,9 @@ namespace NoteManager.API.Controllers
         [Route("Login")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
-        public IActionResult Login(LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            return Ok(_authService.Login(loginDto));
+            return Ok(await _authService.Login(loginDto));
         }
     }
 }

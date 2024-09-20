@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NoteManager.API.Middlewares;
 using NoteManager.API.Services;
 using System.Text;
 
@@ -19,13 +20,14 @@ namespace NoteManager.API
             {
                 options.UseSqlite(builder.Configuration.GetConnectionString("NoteManagerDb"));
             });
-
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<AuthService>();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddCors();
             builder.Services.AddHttpContextAccessor();
+
             #region Swagger
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -59,6 +61,7 @@ namespace NoteManager.API
                 });
             });
             #endregion
+
             #region CORS
             builder.Services.AddCors(options =>
             {
@@ -100,6 +103,10 @@ namespace NoteManager.API
                 ctx.Database.Migrate();
             }
 
+            using (var scope = app.Services.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<AuthService>().Init().Wait();
+            }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -110,19 +117,8 @@ namespace NoteManager.API
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
-            app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { IsApiOnly = false, });
-            app.Use(async (context, next) =>
-            {
-                try
-                {
-                    await next(context);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is ApiException) throw;
-                    throw new ApiException(ex);
-                }
-            });
+            app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { IsApiOnly = false, BypassHTMLValidation = true });
+            app.UseExceptionMiddleware();
 
             app.UseAuthorization();
             app.UseAuthentication();
