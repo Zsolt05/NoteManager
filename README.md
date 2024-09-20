@@ -9,7 +9,7 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 - **Jegyzetek szerkesztése**: Már meglévő jegyzetek módosítása a felhasználói felületen.
 - **Jegyzetek megtekintése**: A felhasználók böngészhetnek az összes elérhető jegyzet között.
 - **Jegyzetek törlése**: Jegyzetek eltávolítása a rendszerből.
-- **Felhasználói azonosítás (opcionális)**: A felhasználók regisztrálhatnak és bejelentkezhetnek a személyes jegyzeteikhez való hozzáférés érdekében.
+- **Felhasználói azonosítás**: A felhasználókat jelenleg a rendszer generálja. A generált felhasználókkal lehet belépni a rendszerbe.
 
 ## Végpontok (API)
 
