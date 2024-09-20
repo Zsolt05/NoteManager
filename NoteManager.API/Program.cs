@@ -20,6 +20,7 @@ namespace NoteManager.API
                 options.UseSqlite(builder.Configuration.GetConnectionString("NoteManagerDb"));
             });
 
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
