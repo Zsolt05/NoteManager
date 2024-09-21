@@ -74,4 +74,4 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 **ASP.NET Core WebAPI**: A jegyzetek kezelése és az adatbázissal való kapcsolattartás. \
 **Blazor WebApp**: A felhasználói felület megvalósítása egy modern webalkalmazásban. \
 **SQLite**: Könnyű, fájl alapú adatbázis, amely a jegyzetek tárolására szolgál. \
-**Entity Framework Core**: ORM (Object-Relational Mapping) réteg, amely megkönnyíti az adatbázis műveleteket az alkalmazásban. \
+**Entity Framework Core**: ORM (Object-Relational Mapping) réteg, amely megkönnyíti az adatbázis műveleteket az alkalmazásban.
