@@ -11,6 +11,11 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 - **Jegyzetek törlése**: Jegyzetek eltávolítása a rendszerből.
 - **Felhasználói azonosítás**: A felhasználókat jelenleg a rendszer generálja. A generált felhasználókkal lehet belépni a rendszerbe.
 
+## Adatbázis
+
+![image](https://github.com/user-attachments/assets/e7a33313-91f8-4951-b0c2-3ef3e57fb80f)
+
+
 ## Végpontok (API)
 
 ### GET /api/notes
@@ -18,12 +23,13 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 - **Válasz**: JSON tömb, amely tartalmazza a jegyzeteket.
   ```json
   [
-    {
-      "id": 1,
-      "title": "Minta Jegyzet",
-      "content": "Ez egy minta jegyzet tartalma.",
-      "createdAt": "2024-09-20T12:00:00"
-    }
+      {
+        "title": "string",
+        "content": "string",
+        "id": "string",
+        "createdAt": "2024-09-21T11:27:51.717Z",
+        "userId": "string"
+      }
   ]
 
 ### GET /api/notes/{id}
@@ -32,10 +38,11 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 **Válasz**: JSON objektum a kért jegyzettel.
 ```json
 {
-  "id": 1,
-  "title": "Minta Jegyzet",
-  "content": "Ez egy minta jegyzet tartalma.",
-  "createdAt": "2024-09-20T12:00:00"
+  "title": "string",
+  "content": "string",
+  "id": "string",
+  "createdAt": "2024-09-21T11:27:51.717Z",
+  "userId": "string"
 }
 ```
 ### POST /api/notes
@@ -64,7 +71,7 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 **Válasz**: Üres válasz sikeres törlés esetén.
 
 ## Technológiák
-ASP.NET Core WebAPI: A jegyzetek kezelése és az adatbázissal való kapcsolattartás. \
-Blazor WebApp: A felhasználói felület megvalósítása egy modern webalkalmazásban. \
-SQLite: Könnyű, fájl alapú adatbázis, amely a jegyzetek tárolására szolgál. \
-Entity Framework Core: ORM (Object-Relational Mapping) réteg, amely megkönnyíti az adatbázis műveleteket az alkalmazásban. \
+**ASP.NET Core WebAPI**: A jegyzetek kezelése és az adatbázissal való kapcsolattartás. \
+**Blazor WebApp**: A felhasználói felület megvalósítása egy modern webalkalmazásban. \
+**SQLite**: Könnyű, fájl alapú adatbázis, amely a jegyzetek tárolására szolgál. \
+**Entity Framework Core**: ORM (Object-Relational Mapping) réteg, amely megkönnyíti az adatbázis műveleteket az alkalmazásban. \
