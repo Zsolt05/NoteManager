@@ -15,8 +15,8 @@ namespace NoteManager.API.Services
         Task Init(int count = 3);
         Task<AuthResponseDto> Login(LoginDto loginDto);
         Task<User?> GetUserByUsername(string username);
-        int GetUserId();
-        string GetUserName();
+        string? GetUserId();
+        string? GetUserName();
         Task<bool> UserExists(string userName);
     }
 
@@ -61,8 +61,8 @@ namespace NoteManager.API.Services
             return user;
         }
 
-        public int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier));
-        public string GetUserName() => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Name);
+        public string? GetUserId() => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.SerialNumber);
+        public string? GetUserName() => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public async Task<AuthResponseDto> Login(LoginDto loginDto)
         {
@@ -91,8 +91,11 @@ namespace NoteManager.API.Services
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.UserName),
-                new Claim(ClaimTypes.SerialNumber, user.Id.ToString())
+                new Claim(ClaimTypes.SerialNumber, user.Id),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration.GetSection("JwtSettings:Issuer").Value),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration.GetSection("JwtSettings:Audience").Value)
             };
 
             /// <summary>
@@ -115,7 +118,7 @@ namespace NoteManager.API.Services
 
             var token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddDays(jwtExpireFromConfig),
+                    expires: DateTime.UtcNow.AddDays(Convert.ToInt32(jwtExpireFromConfig)),
                     signingCredentials: cred
                 );
 

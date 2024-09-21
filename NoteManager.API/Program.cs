@@ -20,8 +20,10 @@ namespace NoteManager.API
             {
                 options.UseSqlite(builder.Configuration.GetConnectionString("NoteManagerDb"));
             });
+
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<INoteService, NoteService>();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -33,14 +35,15 @@ namespace NoteManager.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Projekt Labor API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "NoteManager API", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Bearer, ha haszn�lni akarod akkor Bearer [Token].",
                     Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                    Description = "JWT Authorization header using the Bearer scheme."
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -49,14 +52,11 @@ namespace NoteManager.API
                         {
                             Reference = new OpenApiReference
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id= JwtBearerDefaults.AuthenticationScheme
-                            },
-                            Scheme = "0auth2",
-                            Name=JwtBearerDefaults.AuthenticationScheme,
-                            In= ParameterLocation.Header
+                                Type = ReferenceType.SecurityScheme, Id = "Bearer"
+                            }
                         },
-                        new List<string>()
+                        new string[]
+                            { }
                     }
                 });
             });
@@ -120,8 +120,8 @@ namespace NoteManager.API
             app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { IsApiOnly = false, BypassHTMLValidation = true });
             app.UseExceptionMiddleware();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
