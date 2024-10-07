@@ -1,0 +1,42 @@
+﻿<div class="toast-container" style="position: fixed; top: 20px; right: 20px;">
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="toast @toastType" style="padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+            @message
+        </div>
+    }
+</div>
+
+@code {
+    private string message;
+    private string toastType;
+
+    [Inject] ToastService ToastService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += ShowToast;
+    }
+
+    private void ShowToast(string message, string type)
+    {
+        this.message = message;
+        this.toastType = type == "error" ? "toast-error" : "toast-success";
+
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(async _ =>
+        {
+            await InvokeAsync(() =>
+            {
+                this.message = string.Empty;
+                StateHasChanged();
+            });
+        });
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnShow -= ShowToast;
+    }
+}

@@ -1,0 +1,56 @@
+﻿@page "/login"
+@layout LoginLayout
+@inject IJSRuntime js
+@inject NavigationManager navigation
+@inject IAuthService authService
+
+<div class="card">
+    <div class="card-body my-2">
+        <h3>Login</h3>
+        <hr />
+        <EditForm Model="loginModel" OnValidSubmit="SubmitHandlerAsync">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText @bind-Value="loginModel.UserName" class="form-control" id="email" />
+                <ValidationMessage For="()=>loginModel.UserName" />
+            </div>
+            <div class="form-group">
+                <label for="pw">Password</label>
+                <InputPassword @bind-Value="loginModel.Password" class="form-control" id="pw" />
+                <ValidationMessage For="()=>loginModel.Password" />
+            </div>
+
+            @if (IsSubmit)
+            {
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-primary btn-block">Submit</button>
+            }
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private bool IsSubmit = false;
+
+    private LoginDto loginModel = new LoginDto();
+
+    private async Task SubmitHandlerAsync()
+    {
+        IsSubmit = true;
+        bool result = await authService.Login(loginModel);
+
+        if (result)
+        {
+            navigation.NavigateTo("/");
+        }
+
+        IsSubmit = false;
+    }
+}
