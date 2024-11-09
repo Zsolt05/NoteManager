@@ -1,0 +1,16 @@
+﻿@code {
+    [Parameter] public string Text { get; set; }
+    [Parameter] public int MaxLength { get; set; } = 50;
+}
+
+@if (!string.IsNullOrEmpty(Text))
+{
+    @if (Text.Length > MaxLength)
+    {
+        @(Text.Substring(0, MaxLength) + "...")
+    }
+    else
+    {
+        @Text
+    }
+}

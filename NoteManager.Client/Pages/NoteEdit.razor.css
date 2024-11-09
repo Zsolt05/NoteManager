@@ -1,0 +1,41 @@
+﻿.card-body {
+    padding: 2rem;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+.card-shadow-lg {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-control-lg {
+    font-size: 1.1rem;
+    padding: 1rem;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn:hover {
+    filter: brightness(0.9);
+}
+
+textarea.form-control-lg {
+    font-size: 1rem;
+    padding: 1rem;
+}

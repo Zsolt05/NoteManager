@@ -1,0 +1,47 @@
+﻿@page "/notes/{NoteId}"
+@inject NavigationManager Navigation
+@inject INoteService NoteService
+
+<h3 class="text-center text-primary mb-4">Jegyzet Részletei</h3>
+
+<div class="container">
+    @if (Note == null)
+    {
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Betöltés...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-lg border-0 mb-4">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-primary">@Note?.Title</h5>
+                <p class="card-text text-muted">@Note?.Content</p>
+                <small class="text-muted">Készítve: @Note?.CreatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</small>
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-warning" @onclick="EditNote">
+                        <i class="bi bi-pencil-square me-2"></i> Módosítás
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string NoteId { get; set; }
+
+    private NoteReadDto Note { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Note = await NoteService.GetNoteById(NoteId);
+    }
+
+    private void EditNote()
+    {
+        Navigation.NavigateTo($"/notes/{NoteId}/edit");
+    }
+}

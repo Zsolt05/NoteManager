@@ -1,0 +1,70 @@
+﻿@page "/notes/{NoteId}/edit"
+@inject NavigationManager Navigation
+@inject INoteService NoteService
+
+<h3 class="text-center mb-4 text-primary">Jegyzet Módosítása</h3>
+
+<div class="container">
+    @if (Note == null)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Töltés...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-lg border-0">
+            <div class="card-body">
+                <EditForm Model="@Note" OnValidSubmit="SaveNote">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-4">
+                        <label for="Title" class="form-label text-muted">Cím</label>
+                        <InputText class="form-control" id="Title" @bind-Value="Note.Title" placeholder="Add meg a címét..." />
+                        <ValidationMessage For="@(() => Note.Title)" class="text-danger" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="Content" class="form-label text-muted">Tartalom</label>
+                        <InputTextArea class="form-control" id="Content" @bind-Value="Note.Content" placeholder="Írd be a jegyzet tartalmát..." rows="5" />
+                        <ValidationMessage For="@(() => Note.Content)" class="text-danger" />
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-lg w-48">Mentés</button>
+                        <button type="button" class="btn btn-secondary btn-lg w-48" @onclick="Cancel">Mégse</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string NoteId { get; set; }
+
+    private NoteReadDto Note { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Note = await NoteService.GetNoteById(NoteId);
+    }
+
+    private async Task SaveNote()
+    {
+        var updateNote = new NoteUpdateDto
+            {
+                Title = Note.Title,
+                Content = Note.Content
+            };
+        await NoteService.UpdateNote(NoteId, updateNote);
+        Navigation.NavigateTo($"/notes/{NoteId}");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo($"/notes/{NoteId}");
+    }
+}
