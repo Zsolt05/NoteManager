@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Net;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NoteManager.Client.Services
 {
@@ -22,7 +23,10 @@ namespace NoteManager.Client.Services
             HttpResponseMessage response = await _httpClient.GetAsync(url);
             if (await HandleResponse(response))
             {
-                return await response.Content.ReadFromJsonAsync<T>();
+                var content = await response.Content.ReadAsStringAsync();
+                var jsonObj = JObject.Parse(content);
+                var result = jsonObj["result"].ToObject<T>();
+                return result;
             }
             return default;
         }
@@ -32,7 +36,10 @@ namespace NoteManager.Client.Services
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, data);
             if (await HandleResponse(response))
             {
-                return await response.Content.ReadFromJsonAsync<TResult>();
+                var content = await response.Content.ReadAsStringAsync();
+                var jsonObj = JObject.Parse(content);
+                var result = jsonObj["result"].ToObject<TResult>();
+                return result;
             }
             return default;
         }
@@ -42,7 +49,10 @@ namespace NoteManager.Client.Services
             HttpResponseMessage response = await _httpClient.PutAsJsonAsync(url, data);
             if (await HandleResponse(response))
             {
-                return await response.Content.ReadFromJsonAsync<TResult>();
+                var content = await response.Content.ReadAsStringAsync();
+                var jsonObj = JObject.Parse(content);
+                var result = jsonObj["result"].ToObject<TResult>();
+                return result;
             }
             return default;
         }

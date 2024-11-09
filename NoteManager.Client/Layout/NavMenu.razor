@@ -1,22 +1,24 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">NoteManager.Client</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+﻿<div class="top-row ps-3 navbar navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand text-white fs-4 fw-semibold" href="">
+            <i class="bi bi-journal-text me-2"></i> Jegyzet kezelő
+        </a>
+        <button title="Navigation menu" class="navbar-toggler border-0" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
+<div class="@NavMenuCssClass nav-scrollable bg-light shadow-lg mt-2 position-absolute w-100" @onclick="ToggleNavMenu">
+    <nav class="flex-column py-2">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link d-flex align-items-center text-dark" href="/notes/new" Match="NavLinkMatch.All">
+                <i class="bi bi-pencil-square me-2"></i> Jegyzet létrehozása
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link d-flex align-items-center text-dark" href="/" Match="NavLinkMatch.All">
+                <i class="bi bi-card-list me-2"></i> Jegyzetek
             </NavLink>
         </div>
     </nav>

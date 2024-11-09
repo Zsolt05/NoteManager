@@ -1,0 +1,101 @@
+﻿@inject NavigationManager Navigation
+@inject INoteService NoteService
+
+<h3 class="text-center text-primary mb-4">Jegyzetek</h3>
+
+<div class="container">
+    @if (Notes == null)
+    {
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Betöltés...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var note in Notes)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title"> <TruncateText Text="@note.Title" MaxLength="25" /></h5>
+                            <p class="card-text">
+                                <TruncateText Text="@note.Content" MaxLength="50" />
+                            </p>
+                            <small class="text-muted">Készítve: @note.CreatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</small>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-outline-primary" @onclick="() => ViewNote(note.Id)">
+                                    <i class="bi bi-eye me-2"></i> Részletek
+                                </button>
+                                <button class="btn btn-outline-danger" @onclick="() => ConfirmDelete(note.Id)">
+                                    <i class="bi bi-trash me-2"></i> Törlés
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@if (ShowConfirmDeleteModal)
+{
+    <div class="modal fade show" style="display: block;" tabindex="-1" aria-labelledby="confirmDeleteModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Törlés megerősítése</h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    Biztosan törölni szeretnéd ezt a jegyzetet?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Mégse</button>
+                    <button type="button" class="btn btn-danger" @onclick="DeleteNote">Törlés</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<NoteReadDto> Notes { get; set; } = new List<NoteReadDto>();
+    private string NoteIdToDelete { get; set; }
+    private bool ShowConfirmDeleteModal { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Notes = await NoteService.GetNotes();
+    }
+
+    private void ViewNote(string noteId)
+    {
+        Navigation.NavigateTo($"/notes/{noteId}");
+    }
+
+    private void ConfirmDelete(string noteId)
+    {
+        NoteIdToDelete = noteId;
+        ShowConfirmDeleteModal = true;
+    }
+
+    private void CancelDelete()
+    {
+        ShowConfirmDeleteModal = false;
+        NoteIdToDelete = null;
+    }
+
+    private async Task DeleteNote()
+    {
+        Notes.RemoveAll(n => n.Id == NoteIdToDelete);
+        await NoteService.DeleteNote(NoteIdToDelete);
+
+        ShowConfirmDeleteModal = false;
+        NoteIdToDelete = null;
+    }
+}

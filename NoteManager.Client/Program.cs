@@ -23,7 +23,6 @@ namespace NoteManager.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
-
             await builder.Build().RunAsync();
         }
     }
