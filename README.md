@@ -75,3 +75,14 @@ Az alkalmazás egy ASP.NET WebAPI-t használ a háttérben, Blazor webalkalmazá
 **Blazor WebApp**: A felhasználói felület megvalósítása egy modern webalkalmazásban. \
 **SQLite**: Könnyű, fájl alapú adatbázis, amely a jegyzetek tárolására szolgál. \
 **Entity Framework Core**: ORM (Object-Relational Mapping) réteg, amely megkönnyíti az adatbázis műveleteket az alkalmazásban.
+
+## Képek
+![image](https://github.com/user-attachments/assets/24a36294-ef8f-4e84-a54b-0cbae1437305)
+![image](https://github.com/user-attachments/assets/a4f7d340-b753-4671-bd39-8eb6c818f245)
+![image](https://github.com/user-attachments/assets/0b0d2ed8-ee54-4df7-813b-1c229ce970b3)
+![image](https://github.com/user-attachments/assets/b449c706-ad6e-497c-8d06-c87dfc9a8ea2)
+![image](https://github.com/user-attachments/assets/17a3cfda-d864-4e5d-9fbe-37a196ae1a6c)
+![image](https://github.com/user-attachments/assets/067baf5b-f2a3-4247-a11e-aa7836ffb7dc)
+
+
+
